@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>TaskManager</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            html, body {
+                height: 100%;
+                background: -moz-linear-gradient(45deg, lightgreen, lawngreen);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <!-- Marca o logo -->
+                    <a class="navbar-brand" href="Home.html">
+                        <img src="https://i.redd.it/why-is-this-style-of-cover-art-so-popular-among-phonk-v0-5oxy8bezfova1.jpg?width=640&format=pjpg&auto=webp&s=bf23e49151ec7bb3697096e886fd91fa4a05794d" alt="Logo" width="50">
+                    </a>
+                    <!-- Botón de menú hamburguesa que aparece en dispositivos móviles -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Contenedor colapsable para los enlaces del menú -->
+                    <div class="collapse navbar-collapse" id="navbarContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="Tasks.html">Tareas</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Etiquetas
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Salud</a></li>
+                                    <li><a class="dropdown-item" href="#">Proyectos</a></li>
+                                    <li><a class="dropdown-item" href="#">Higiene</a></li>
+                                    <li><a class="dropdown-item" href="#">Trabajo</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newModal">
+                                            <b>+ Nueva etiqueta</b>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <form class="d-flex me-2">
+                            <input class="form-control" type="email" id="search" placeholder="Buscar" aria-label="Buscar">
+                            <button class="btn btn-primary ms-2" type="submit">Buscar</button>
+                        </form>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="Login.html" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    <i class="fas fa-sign-out-alt" title="Cerrar sesión" style="font-size:24px; color: white;"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div class="table-responsive">
+                <table class="table table-primary">
+                    <thead>
+                    <tr>
+                        <th scope="col"><i class='fas fa-check'></i></th>
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Etiquetas</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td scope="row"><input type="checkbox"></td>
+                        <td>Escribir 3 paginas</td>
+                        <td><span class="badge bg-primary">Proyectos</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row"><input type="checkbox"></td>
+                        <td>Ir al gimnasio</td>
+                        <td><span class="badge bg-warning">Salud</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row"><input type="checkbox"></td>
+                        <td>Dormir bien</td>
+                        <td><span class="badge bg-warning">Salud</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row"><input type="checkbox" checked></td>
+                        <td><del>Reunion con Matt</del></td>
+                        <td><span class="badge bg-danger">Trabajo</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row"><input type="checkbox" checked></td>
+                        <td><del>Armar índice</del></td>
+                        <td><span class="badge bg-primary">Proyectos</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row"><input type="checkbox" checked></td>
+                        <td><del>Bañarse</del></td>
+                        <td><span class="badge bg-success">Higiene</span></td>
+                        <td>15/02/2025</td>
+                        <td>
+                            <i class='fas fa-pen' style='color: blue; margin: 2%'></i>
+                            <i class='fas fa-trash' style='color: red; margin: 2%'></i>
+                            <i class='fas fa-tag' style='color: green; margin: 2%'></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <footer>
+            <button type="button" class="btn btn-primary" style="position: fixed; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#addtaskModal"><i class="fas fa-plus"></i></button>
+        </footer>
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cerrar sesión</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Seguro de que deseas cerrar sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="window.location.href='P01_login.html';">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="newModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Nueva etiqueta</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <label for="name" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Deporte">
+                            <label for="color" class="form-label">Color:</label>
+                            <input type="color" class="form-control" id="color" placeholder="Deporte">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="addtaskModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Nueva Tarea</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Deporte">
+                            <label for="date" class="form-label">Color:</label>
+                            <input type="date" class="form-control" id="date" placeholder="dd/mm/aaa">
+                            <label class="form-label">Etiqueta:</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Seleccionar</option>
+                                <option value="1">Proyectos</option>
+                                <option value="2">Higiene</option>
+                                <option value="3">Salud</option>
+                                <option value="3">Salud</option>
+                                <option value="4">Trabajo</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./js/bootstrap.bundle.js"></script>
+    </body>
+</html>
