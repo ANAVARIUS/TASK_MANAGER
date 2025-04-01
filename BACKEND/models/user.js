@@ -1,12 +1,24 @@
-let numberOfUsers = 1;
+//-----------IMPORTACIONES-----------//
+const fs = require('fs');
+
+//-----------LECTURA DE BASE DE DATOS-----------//
+
+let Users = JSON.parse(fs.readFileSync('./BACKEND/database/users.json', 'utf8'));
+
+//-----------MODELO-----------//
+
 function getNextUserID(){
-    return numberOfUsers;
+    return Users.length+1;
 }
+
+
 class UserException{
     constructor(errorMessage){
         this.errorMessage = errorMessage;
     }
 }
+
+
 class User{
     #id;
     #name;
@@ -16,12 +28,10 @@ class User{
     constructor(name, email, password){
         if(!name || !email || !password)
             throw new UserException("User must have a name, an email and a password");
-        this.#name = name;
-        if (data.users.some(user => user.email === email))
-            throw new UserException("User with that email already exists");
-        this.#email = email;
+        this.name = name;
+        this.email = email;
         this.#id = getNextUserID();
-        this.#password = password;
+        this.password = password;
         this.#joined_at = new Date();
     }
     get id(){
@@ -48,6 +58,8 @@ class User{
         else throw new UserException("User must have a name");
     }
     set email(email){
+        if (Users.some(user => user.email === email))
+            throw new UserException("User with that email already exists");
         if(email && (email.length > 0))
             this.#email = email;
         else throw new UserException("User must have an email");
@@ -60,4 +72,17 @@ class User{
     set joined_at(joined_at){
         throw new UserException("Joined-at attribute can not be changed");
     }
+    toObj(){
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            joined_at: this.joined_at
+        }
+    }
 }
+
+//-----------EXPORTACIONES-----------//
+
+module.exports = {User, Users};
