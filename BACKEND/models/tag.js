@@ -1,24 +1,37 @@
-let tagsIds = 0
+//-----------IMPORTACIONES-----------//
+
+const fs = require('fs');
+
+//-----------LECTURA DE BASE DE DATOS-----------//
+
+let tags = JSON.parse(fs.readFileSync('./BACKEND/database/tags.json', 'utf8'));
+
+//-----------MODELO-----------//
+
 function getNextTagID(){
-    return tagsIds;
+    return tags.length+1;
 }
+
 class TagException{
     constructor(errorMessage){
         this.errorMessage = errorMessage;
     }
 }
+
 class Tag{
     #id;
     #name;
     #color;
-    constructor(name, color){
+    #id_user
+    constructor(name, color, id_user){
         if(!name || !color)
             throw new TaskException("A name and color must be provided");
         if(isNaN(parseInt(color, 16)))
             throw new TaskException("The color must be in hexadecimal format");
         this.#id = getNextTagID();
-        this.#name = name;
-        this.#color = parseInt(color, 16);
+        this.name = name;
+        this.color = parseInt(color, 16);
+        this.id_user = id_user;
     }
     get id(){
         return this.#id;
@@ -37,7 +50,25 @@ class Tag{
     }
     set color(color){
         if(isNaN(parseInt(color, 16)))
-            throw new TaskException("The color must be in hexadecimal format");
+            throw new TagException("The color must be in hexadecimal format");
         this.#color = parseInt(color, 16);
     }
+    get id_user(){
+        return this.#id_user;
+    }
+    set id_user(id_user){
+        this.#id_user = id_user;
+    }
+    toObj(){
+        return {
+            id: this.id,
+            name: this.name,
+            color: this.color,
+            id_user: this.id_user
+        }
+    }
 }
+
+//-----------EXPORTACIONES-----------//
+
+module.exports = {Tag, tags};

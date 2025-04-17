@@ -65,6 +65,8 @@ class User{
         else throw new UserException("User must have an email");
     }
     set password(password){
+        if (Users.some(user => user.password === password))
+            throw new UserException("User with that password already exists");
         if(password && (password.length > 7))
             this.#password = password;
         else throw new UserException("User must have a valid password");

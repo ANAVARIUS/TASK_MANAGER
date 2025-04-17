@@ -2,6 +2,8 @@
 const express = require('express');
 const path = require('path');
 const routerUsers = require('./users');
+const routerTasks = require('./tasks');
+const routerTags = require('./tags');
 const routerApi = express.Router();
 const app = express();
 
@@ -13,6 +15,10 @@ const Header_validation = (req, res, next) =>
 //-----------MIDDLEWARE-----------//
 
 routerApi.use('/users', routerUsers);
+routerApi.use('/tasks', routerTasks);
+routerApi.use('/tags', routerTags);
+routerApi.use('/home.html', Header_validation);
+routerApi.use('/tasks.html', Header_validation);
 
 //-----------RUTAS API-----------//
 
@@ -25,7 +31,6 @@ routerApi.get('/', (req, res) => {
     });
 routerApi.get(
     '/home.html',
-    Header_validation,
     (req, res) =>
         res.sendFile(path.resolve(__dirname+"/../../FRONTEND/views/home.html")));
 routerApi.get(
@@ -34,7 +39,6 @@ routerApi.get(
         res.sendFile(path.resolve(__dirname+"/../../FRONTEND/views/login.html")));
 routerApi.get(
     '/tasks.html',
-    Header_validation,
     (req, res) =>
         res.sendFile(path.resolve(__dirname+"/../../FRONTEND/views/tasks.html")));
 
