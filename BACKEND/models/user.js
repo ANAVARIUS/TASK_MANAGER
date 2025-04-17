@@ -3,7 +3,7 @@ const fs = require('fs');
 
 //-----------LECTURA DE BASE DE DATOS-----------//
 
-let Users = JSON.parse(fs.readFileSync('./BACKEND/database/users.json', 'utf8'));
+let Users = JSON.parse(fs.readFileSync('./database/users.json', 'utf8'));
 
 //-----------MODELO-----------//
 

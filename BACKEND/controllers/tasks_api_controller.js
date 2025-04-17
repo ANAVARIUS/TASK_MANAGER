@@ -24,7 +24,7 @@ function createTask(req, res) {
         else{
             let newTask = new Task(title, due_date, id_user, status, tags, description);
             tasks.push(newTask.toObj());
-            fs.writeFileSync('./BACKEND/database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
+            fs.writeFileSync('./database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
             res.status(200).send('Task saved successfully.');
         }
     }
@@ -116,7 +116,7 @@ function deleteTask(req, res) {
     const taskIndex = tasks.findIndex(task => task.id === parseInt(req.params.id));
     const taskToBeDeleted = tasks.at(taskIndex);
     tasks.splice(taskIndex, 1);
-    fs.writeFileSync('./BACKEND/database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
+    fs.writeFileSync('./database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
     res.status(200).json({
         message: `Task with id ${req.params.id} deleted!`,
         task: taskToBeDeleted

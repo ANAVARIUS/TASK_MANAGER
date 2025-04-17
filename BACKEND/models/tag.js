@@ -4,7 +4,7 @@ const fs = require('fs');
 
 //-----------LECTURA DE BASE DE DATOS-----------//
 
-let tags = JSON.parse(fs.readFileSync('./BACKEND/database/tags.json', 'utf8'));
+let tags = JSON.parse(fs.readFileSync('./database/tags.json', 'utf8'));
 
 //-----------MODELO-----------//
 

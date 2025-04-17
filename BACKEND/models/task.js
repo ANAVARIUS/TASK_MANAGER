@@ -4,7 +4,7 @@ const {User, Users} = require('./user');
 
 //-----------LECTURA DE BASE DE DATOS-----------//
 
-let tasks = JSON.parse(fs.readFileSync('./BACKEND/database/tasks.json', 'utf8'));
+let tasks = JSON.parse(fs.readFileSync('./database/tasks.json', 'utf8'));
 
 //-----------MODELO-----------//
 

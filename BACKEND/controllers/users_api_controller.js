@@ -16,7 +16,7 @@ function createUser(req, res) {
         if(password === confirmPassword){
             let newUser = new User(name, email, password);
             Users.push(newUser.toObj());
-            fs.writeFileSync('./BACKEND/database/users.json', JSON.stringify(Users, null, 2), 'utf8');
+            fs.writeFileSync('./database/users.json', JSON.stringify(Users, null, 2), 'utf8');
             res.status(200).send("Guardado!" +
                 "")
         }
@@ -112,7 +112,7 @@ function deleteUser(req, res) {
         }
     }
     Users.splice(userIndex, 1);
-    fs.writeFileSync('./BACKEND/database/users.json', JSON.stringify(Users, null, 2), 'utf8');
+    fs.writeFileSync('./database/users.json', JSON.stringify(Users, null, 2), 'utf8');
     res.status(200).json({
         message: `User with id ${req.params.id} deleted!`,
         user: userToBeDeleted

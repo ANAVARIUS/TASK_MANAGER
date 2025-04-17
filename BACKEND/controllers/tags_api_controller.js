@@ -13,7 +13,7 @@ function createTag(req, res) {
         let color = req.body.color;
         let newTag = new Tag(name, color, id_user.id);
         tags.push(newTag.toObj());
-        fs.writeFileSync('./BACKEND/database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
+        fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
         res.status(200).send('Tag saved successfully.');
     }
     catch(err){
@@ -95,7 +95,7 @@ function updateTag(req, res) {
         req.status(400).send("No valid attributes were provided.");
         return;
     }
-    fs.writeFileSync('./BACKEND/database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
+    fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
     res.status(200).json({
         message: "Tag updated!",
         tag: tag
