@@ -4,6 +4,7 @@ const path = require('path');
 const routerUsers = require('./users');
 const routerTasks = require('./tasks');
 const routerTags = require('./tags');
+const {createUser, getAllUsers, getUserById, updateUser, deleteUser, login} = require('../controllers/users_api_controller');
 const routerApi = express.Router();
 const app = express();
 
@@ -21,7 +22,7 @@ routerApi.use('/home.html', Header_validation);
 routerApi.use('/tasks.html', Header_validation);
 
 //-----------RUTAS API-----------//
-
+routerApi.post('/login', login);
 routerApi.get('/', (req, res) => {
     let header = req.header('x-auth');
     if(header)

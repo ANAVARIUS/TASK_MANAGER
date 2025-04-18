@@ -119,6 +119,18 @@ function deleteUser(req, res) {
     })
 }
 
+let login = (req, res) => {
+    let data = req.body,
+        user = Users.find(user=>user.email === data.email && user.password === data.pswd);
+    if (user){
+        res.send(user)
+    }
+    else {
+        console.table(data)
+        res.sendStatus(401)
+    }
+}
+
 //-----------EXPORTACIONES-----------//
 
-module.exports = {createUser, getAllUsers, getUserById, updateUser, deleteUser};
+module.exports = {createUser, getAllUsers, getUserById, updateUser, deleteUser, login};
