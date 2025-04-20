@@ -49,6 +49,8 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="../controllers/env.js">
+    </script>
 </head>
     <body>
     <header>
@@ -89,13 +91,18 @@
                     </ul>
                     <!-- Formulario y otros elementos alineados a la derecha -->
                     <form class="d-flex me-2">
-                        <input class="form-control" type="email" id="search" placeholder="Buscar" aria-label="Buscar">
+                        <input class="form-control" type="text" id="search" placeholder="Buscar" aria-label="Buscar">
                         <button class="btn btn-primary ms-2" type="submit">Buscar</button>
                     </form>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="Login.html" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#myModal">
                                 <i class="fas fa-sign-out-alt" title="Cerrar sesión" style="font-size:24px; color: white;"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Login.html" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                <i class="fas fa-cog" title="Configuracion" style="font-size:24px; color: white;"></i>
                             </a>
                         </li>
                     </ul>
@@ -278,7 +285,31 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="window.location.href='Login.html';">Aceptar</button>
+                        <button id="CerrarSesionButton" type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="logout()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="editUserModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar Usuario</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <label for="userName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="userName">
+                            <label for="userEmail" class="form-label">Correo</label>
+                            <input type="text" class="form-control" id="userEmail">
+                            <label for="userPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="userPassword">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Eliminar</button>
+                        <button id="GuardarCambiosnButton" type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal" onclick="">Guardar cambios</button>
                     </div>
                 </div>
             </div>
@@ -306,5 +337,11 @@
             </div>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="../controllers/auth_controller.js"></script>
+    <script src="../controllers/tasks_controller.js"></script>
+    <script src="../controllers/tags_controller.js"></script>
+    <script>
+        document.getElementById("editUserModal").addEventListener("shown.bs.modal", populateUserData);
+    </script>
     </body>
 </html>

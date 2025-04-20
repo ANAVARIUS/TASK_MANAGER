@@ -12,6 +12,9 @@
                 background: -moz-linear-gradient(45deg, lightgreen, lawngreen);
             }
         </style>
+        <script src="../controllers/env.js">
+        </script>
+        <script src="../controllers/auth_controller.js"></script>
     </head>
     <body>
         <header>
@@ -163,7 +166,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="window.location.href='P01_login.html';">Aceptar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="logout()">Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -222,5 +225,7 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+        <script src="../controllers/tasks_controller.js"></script>
+        <script src="../controllers/tags_controller.js"></script>
     </body>
 </html>

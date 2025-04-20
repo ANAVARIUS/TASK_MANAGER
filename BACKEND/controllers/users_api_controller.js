@@ -17,15 +17,13 @@ function createUser(req, res) {
             let newUser = new User(name, email, password);
             Users.push(newUser.toObj());
             fs.writeFileSync('./database/users.json', JSON.stringify(Users, null, 2), 'utf8');
-            res.status(200).send("Guardado!" +
-                "")
+            res.status(200).send(newUser.toObj());
         }
         else {
             throw new Error("Error 400: Passwords don't match");
         }
     } catch(err){
-        console.log(err)
-        res.status(400).send(err.errorMessage);
+        res.status(400).send({"ERROR": err.message});
     }
 }
 

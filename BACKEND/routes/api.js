@@ -4,22 +4,24 @@ const path = require('path');
 const routerUsers = require('./users');
 const routerTasks = require('./tasks');
 const routerTags = require('./tags');
-const {createUser, getAllUsers, getUserById, updateUser, deleteUser, login} = require('../controllers/users_api_controller');
+const { createUser,
+        getAllUsers,
+        getUserById,
+        updateUser,
+        deleteUser,
+        login} = require('../controllers/users_api_controller');
 const routerApi = express.Router();
 const app = express();
 
 //-----------FUNCIONES UTILES-----------//
 
-const Header_validation = (req, res, next) =>
-    (req.header('x-auth')? next() : res.status(401).send("Unauthorized: Authentication needed."));
+
 
 //-----------MIDDLEWARE-----------//
 
 routerApi.use('/users', routerUsers);
 routerApi.use('/tasks', routerTasks);
 routerApi.use('/tags', routerTags);
-routerApi.use('/home.html', Header_validation);
-routerApi.use('/tasks.html', Header_validation);
 
 //-----------RUTAS API-----------//
 routerApi.post('/login', login);
