@@ -1,3 +1,40 @@
+const init = ()=>{
+    fetch('/tags?page=1&limit=200', {
+        method: 'GET',
+        headers: {'x-auth': JSON.parse(sessionStorage.getItem('user')).password}
+    }).then(res => {
+        if (!res.ok) {
+            return res.text().then(text => {
+                throw new Error(`HTTP error! status: ${res.status}, body: ${text}`);
+            });
+        }
+        return res.json();
+    })
+        .then(data => {
+            let responseData = data;
+            let toggleTags = document.getElementById("listOfTasgs");
+            if(toggleTags)
+                for(let tag of responseData.data){
+                    let tag_container = document.createElement("a"),
+                        edit_tag_icon = document.createElement("i");
+                    tag_container.innerText = tag.name;
+                    edit_tag_icon.style.marginLeft = '10%';
+                    edit_tag_icon.style.color = 'green';
+                    tag_container.classList.add("dropdown-item");
+                    edit_tag_icon.classList.add('fa', 'fa-pen');
+                    tag_container.append(edit_tag_icon);
+                    tag_container.addEventListener('click', () => {editTag(tag)});
+                    toggleTags.prepend(tag_container);
+                }
+        })
+        .catch(error => {
+            console.error('There was an error during the login process:', error);
+        });
+    let userNameHeading = document.getElementById("userNameWidget");
+    if(userNameHeading)
+        userNameHeading.innerText = JSON.parse(sessionStorage.getItem("user")).name;
+};
+
 function toggleForms(){
     let form_login = document.getElementById('formLogin');
     form_register = document.getElementById('formRegister');
@@ -61,7 +98,6 @@ function register(){
             })
         }
         return response.json();
-
     }).then(user => {
         sessionStorage.setItem('user',JSON.stringify(user));
         window.location.href = local_url+'home.html';
@@ -80,4 +116,50 @@ function populateUserData(){
     nameField.value = name;
     emailField.value = email;
     passwordField.value = password;
+}
+
+function editUserInfo(){
+    event.preventDefault();
+    let data = new FormData(event.target);
+    fetch(`/users/${JSON.parse(sessionStorage.getItem('user')).id}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(Object.fromEntries(data.entries()))
+    }).then(response => {
+        if(!response.ok){
+            return response.json().then(errorData => {
+                console.error("Registration failed:", errorData);
+                alert(`Error: ${errorData.ERROR || 'Registration failed'}`);
+                return Promise.reject(errorData);
+            })
+        }
+        return response.json();
+    }).then(user => {
+        sessionStorage.setItem('user',JSON.stringify(user));
+        window.location.href = local_url+'home.html';
+    }).catch(error => {
+        console.error('Error al editar usuario:', error);
+    })
+}
+
+function deleteUserPermanently(){
+    event.preventDefault();
+    fetch(`/users/${JSON.parse(sessionStorage.getItem('user')).id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+        if(!response.ok){
+            return response.json().then(errorData => {
+                console.error("Registration failed:", errorData);
+                alert(`Error: ${errorData.ERROR || 'Registration failed'}`);
+                return Promise.reject(errorData);
+            })
+        }
+        return response.json();
+    }).then(user => {
+        sessionStorage.clear();
+        window.location.href = local_url;
+    }).catch(error => {
+        console.error('Error al editar usuario:', error);
+    })
 }

@@ -81,23 +81,22 @@ function getAllUsers(req, res) {
 
 
 function updateUser(req, res) {
-    let user = Users.find(user => user.id === parseInt(req.params.id));
+    let userIndex = Users.findIndex(user => user.id === parseInt(req.params.id));
+    let userToEdit = Users[userIndex];
     let obj_new_info = req.body;
     let validAttributes = ["name", "email", "password"];
     let updated = false;
     for (let key in obj_new_info) {
         if (validAttributes.includes(key)) {
-            user[key] = obj_new_info[key];
+            userToEdit[key] = obj_new_info[key];
             updated = true;
         }
     }
+    fs.writeFileSync('./database/users.json', JSON.stringify(Users, null, 2), 'utf8');
     if (!updated) {
         res.status(400).send("No valid parameter was found.");
     }
-    else res.status(200).json({
-        message: "User updated!",
-        user: user
-    })
+    else res.status(200).send(userToEdit);
 }
 
 
@@ -105,7 +104,7 @@ function deleteUser(req, res) {
     const userIndex = Users.findIndex(user => user.id === parseInt(req.params.id));
     const userToBeDeleted = Users.find(user => user.id === parseInt(req.params.id));
     for (let task of tasks) {
-        if (task.id_user === id) {
+        if (task.id_user === userToBeDeleted.id) {
             res.status(403).send("The user has active tasks.");
         }
     }
@@ -124,7 +123,6 @@ let login = (req, res) => {
         res.send(user)
     }
     else {
-        console.table(data)
         res.sendStatus(401)
     }
 }

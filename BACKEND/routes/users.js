@@ -18,19 +18,14 @@ const CheckMasterCredentials = (req, res, next) =>
     (req.header('x-auth')? next() : res.status(401).send("Unauthorized: Authentication needed."));
 const ValidateUser = (req, res, next) => {
         const id = parseInt(req.params.id);
-        let Auth = req.header('x-auth');
-        if(Auth && Users.some(user => (user.password === Auth) && user.id === id)){
-            if(!Users.some(user => user.id === id))
-                res.status(404).send("User not found by ID.");
-            else next();
-        }
+        if(Users.some(user => user.id === id)) next();
         else res.status(401).send("Unauthorized: Authentication needed.");
     }
 
 //-----------RUTAS-----------//
 
 routerUsers.post('/', createUser);
-routerUsers.get('/', CheckMasterCredentials, getAllUsers);
+routerUsers.get('/', getAllUsers);
 routerUsers.get('/:id', ValidateUser, getUserById);
 routerUsers.patch('/:id', ValidateUser, updateUser);
 routerUsers.delete('/:id', ValidateUser, deleteUser);

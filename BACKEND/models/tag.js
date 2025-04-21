@@ -14,7 +14,7 @@ function getNextTagID(){
 
 class TagException{
     constructor(errorMessage){
-        this.errorMessage = errorMessage;
+        this.message = errorMessage;
     }
 }
 
@@ -23,11 +23,12 @@ class Tag{
     #name;
     #color;
     #id_user
-    constructor(name, color, id_user){
+    constructor(name, colorHex, id_user){
+        let color = colorHex.slice(1, colorHex.length);
         if(!name || !color)
-            throw new TaskException("A name and color must be provided");
+            throw new TagException("A name and color must be provided");
         if(isNaN(parseInt(color, 16)))
-            throw new TaskException("The color must be in hexadecimal format");
+            throw new TagException("The color must be in hexadecimal format");
         this.#id = getNextTagID();
         this.name = name;
         this.color = parseInt(color, 16);
@@ -71,4 +72,4 @@ class Tag{
 
 //-----------EXPORTACIONES-----------//
 
-module.exports = {Tag, tags};
+module.exports = {Tag, tags, TagException};

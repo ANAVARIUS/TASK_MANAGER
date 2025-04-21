@@ -1,5 +1,5 @@
 //-----------IMPORTACIONES-----------//
-const {Tag, tags} = require('../models/tag.js');
+const {Tag, tags, TagException} = require('../models/tag.js');
 const fs = require("fs");
 const {User, Users} = require("../models/user");
 const {Task, tasks} = require('../models/task.js');
@@ -14,10 +14,10 @@ function createTag(req, res) {
         let newTag = new Tag(name, color, id_user.id);
         tags.push(newTag.toObj());
         fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
-        res.status(200).send('Tag saved successfully.');
+        res.status(200).send({'200': 'Success'});
     }
     catch(err){
-        res.status(400).send(err.errorMessage);
+        res.status(400).send({"ERROR": err.message});
     }
 }
 
@@ -61,7 +61,7 @@ function getAllTags(req, res) {
                 nextPage: page + 1,
                 limit: limit,
                 total: tasks.length,
-                data: userTags.slice(Firsttag, Firsttag + limit)
+                data: userTags.slice(Firsttag, Firsttag + limit),
             }
         )
     }
@@ -71,35 +71,36 @@ function getAllTags(req, res) {
 }
 
 function updateTag(req, res) {
-    let id = parseInt(req.params.id);
-    let tag = tags.find(tag => tag.id === id);
-    if (!tag) {
-        req.status(404).send("404 - Tag Not Found!");
-        return;
-    }
-    let obj_new_info = req.body;
-    let validAttributes = ["name", "color"];
-    let updated = false;
-
-    for (let key in obj_new_info) {
-        if (validAttributes.includes(key)) {
-            if (key === "color" && isNaN(parseInt(obj_new_info[key], 16))) {
-                req.status(400).send("Tag color must be in hexadecimal format.");
-                return;
-            }
-            tag[key] = obj_new_info[key];
-            updated = true;
+    try {
+        let id = parseInt(req.params.id);
+        let tag = tags.find(tag => tag.id === id);
+        if (!tag) {
+            res.status(404).send({"ERROR": "404 - Tag Not Found!"});
+            return;
         }
+        let obj_new_info = req.body;
+        let validAttributes = ["name", "color"];
+        let updated = false;
+
+        for (let key in obj_new_info) {
+            if (validAttributes.includes(key)) {
+                tag[key] = obj_new_info[key];
+                updated = true;
+            }
+        }
+        if (!updated) {
+            res.status(400).send({"ERROR": "No valid attributes were provided."});
+            return;
+        }
+        fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
+        res.status(200).json({
+            message: "Tag updated!",
+            tag: tag
+        })
     }
-    if (!updated) {
-        req.status(400).send("No valid attributes were provided.");
-        return;
+    catch(err){
+        res.status(400).send({"ERROR": err.message});
     }
-    fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
-    res.status(200).json({
-        message: "Tag updated!",
-        tag: tag
-    })
 }
 
 function deleteTag(req, res) {
@@ -116,7 +117,7 @@ function deleteTag(req, res) {
         }
     }
     tags.splice(tagIndex, 1);
-    fs.writeFileSync('./BACKEND/database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
+    fs.writeFileSync('./database/tags.json', JSON.stringify(tags, null, 2), 'utf8');
     res.status(200).json({
         message: `Tag with id ${req.params.id} deleted!`,
         tag: tagToBeDeleted

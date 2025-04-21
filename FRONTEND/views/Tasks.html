@@ -11,6 +11,18 @@
                 height: 100%;
                 background: -moz-linear-gradient(45deg, lightgreen, lawngreen);
             }
+            .btn{
+                background-color: inherit;
+                border-color: limegreen;
+                color: limegreen;
+                margin-left: 20%;
+                margin-right: 20%;
+            }
+            .dropdown-toggle{
+                background-color: inherit;
+                color: white;
+                border: none;
+            }
         </style>
         <script src="../controllers/env.js">
         </script>
@@ -41,11 +53,7 @@
                                     Etiquetas
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Salud</a></li>
-                                    <li><a class="dropdown-item" href="#">Proyectos</a></li>
-                                    <li><a class="dropdown-item" href="#">Higiene</a></li>
-                                    <li><a class="dropdown-item" href="#">Trabajo</a></li>
-                                    <li>
+                                    <li id="listOfTasgs">
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newModal">
                                             <b>+ Nueva etiqueta</b>
                                         </a>
@@ -61,6 +69,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="Login.html" data-bs-toggle="modal" data-bs-target="#myModal">
                                     <i class="fas fa-sign-out-alt" title="Cerrar sesión" style="font-size:24px; color: white;"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Login.html" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                    <i class="fas fa-cog" title="Configuracion" style="font-size:24px; color: white;"></i>
                                 </a>
                             </li>
                         </ul>
@@ -179,16 +192,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form onsubmit="createTag()">
                             <label for="name" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="name" placeholder="Deporte">
+                            <input type="text" class="form-control" id="name" placeholder="Deporte" name="name" required>
                             <label for="color" class="form-label">Color:</label>
-                            <input type="color" class="form-control" id="color" placeholder="Deporte">
+                            <input type="color" class="form-control" id="color" placeholder="Deporte" name="color" style="margin-bottom: 5%">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-danger btn-sm" >Aceptar</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -224,8 +237,53 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="editUserModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar Usuario</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editUserForm" onsubmit="editUserInfo()">
+                            <label for="userName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="userName" name="name" required>
+                            <label for="userEmail" class="form-label">Correo</label>
+                            <input type="email" class="form-control" id="userEmail" name="email" required>
+                            <label for="userPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="userPassword" name="password" style="margin-bottom: 5%" required>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-toggle="modal" data-bs-target="#deleteUserModal">Eliminar</button>
+                                <button id="GuardarCambiosnButton" type="submit" class="btn btn-success btn-sm">Guardar cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="deleteUserModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar Usuario</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Seguro de que deseas eliminar tu usuario?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" style="margin-left: auto;margin-right: auto;" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="deleteUserButton" type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" onclick="deleteUserPermanently()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
         <script src="../controllers/tasks_controller.js"></script>
         <script src="../controllers/tags_controller.js"></script>
+        <script>
+            document.getElementById("editUserModal").addEventListener("shown.bs.modal", populateUserData);
+            init();
+        </script>
     </body>
 </html>

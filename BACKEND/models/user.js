@@ -14,7 +14,7 @@ function getNextUserID(){
 
 class UserException{
     constructor(errorMessage){
-        this.errorMessage = errorMessage;
+        this.message = errorMessage;
     }
 }
 
