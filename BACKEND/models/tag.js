@@ -27,11 +27,9 @@ class Tag{
         let color = colorHex.slice(1, colorHex.length);
         if(!name || !color)
             throw new TagException("A name and color must be provided");
-        if(isNaN(parseInt(color, 16)))
-            throw new TagException("The color must be in hexadecimal format");
         this.#id = getNextTagID();
         this.name = name;
-        this.color = parseInt(color, 16);
+        this.color = color;
         this.id_user = id_user;
     }
     get id(){

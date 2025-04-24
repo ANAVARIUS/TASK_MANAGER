@@ -110,14 +110,14 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <p><b id="userNameWidget"></b></p>
-                                        <p><b>Tareas terminadas hoy:</b> 6 tareas</p>
-                                        <p><b>Tareas pendientes de hoy:</b> 4 tareas</p>
+                                        <p id="tareasTerminadas"></p>
+                                        <p id="tareasPendientes"></p>
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <p><b>AI Resume:</b></p>
-                                <p>Diego Alonso Gomez es un usuario que ha terminado 6 tareas hoy. Aún tiene 4 pendientes para el día, por lo que lleva un total de 60% de trabajo terminado</p>
+                                <p id="AIResume"></p>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Tareas de hoy</h5>
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="todaytasksdiv">
                                 <table class="table table-primary">
                                     <thead>
                                     <tr>
@@ -136,33 +136,14 @@
                                         <th scope="col">Fecha</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Escribir tres paginas</td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Ir al gimnasio</td>
-                                        <td><span class="badge bg-warning">Salud</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Dormir bien</td>
-                                        <td><span class="badge bg-warning">Salud</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Sacar la basura</td>
-                                        <td><span class="badge bg-success">Higiene</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
+                                    <tbody id="tableTodayTasks">
                                     </tbody>
                                 </table>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="pagination1">
+                                        <!-- Pagination buttons will be inserted here -->
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -171,13 +152,9 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Tareas pendientes por etiqueta</h5>
-                            <div class="d-flex justify-content-center gap-4 mt-3 mb-3">
-                                <span class="badge bg-primary">Proyectos</span>
-                                <span class="badge bg-success" style="opacity: 0.5;">Higiene</span>
-                                <span class="badge bg-danger" style="opacity: 0.5;">Trabajo</span>
-                                <span class="badge bg-warning" style="opacity: 0.5;">Salud</span>
+                            <div class="d-flex justify-content-center gap-4 mt-3 mb-3" id="tagDisplay">
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="divPendingTasksByTag">
                                 <table class="table table-dark" id="labeltable">
                                     <thead>
                                     <tr>
@@ -187,33 +164,14 @@
                                         <th scope="col">Fecha</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Escribir tres paginas</td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Diseñar portada</td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Armar sinopsis</td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox"></td>
-                                        <td>Escribir 5 paginas</td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
+                                    <tbody id="tableTasksByTag">
                                     </tbody>
                                 </table>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="pagination3">
+                                        <!-- Pagination buttons will be inserted here -->
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -222,7 +180,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Tareas terminadas</h5>
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="todayfinishedtasksdiv">
                                 <table class="table table-primary">
                                     <thead>
                                     <tr>
@@ -232,27 +190,14 @@
                                         <th scope="col">Fecha</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox" checked></td>
-                                        <td><del>Armar indice</del></td>
-                                        <td><span class="badge bg-primary">Proyectos</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox" checked></td>
-                                        <td><del>Bañarse</del></td>
-                                        <td><span class="badge bg-success">Higiene</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"><input type="checkbox" checked></td>
-                                        <td><del>Reunion con Matt</del></td>
-                                        <td><span class="badge bg-danger">Trabajo</span></td>
-                                        <td>15/02/2025</td>
-                                    </tr>
+                                    <tbody id="tableFinishedTodayTasks">
                                     </tbody>
                                 </table>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="pagination2">
+                                        <!-- Pagination buttons will be inserted here -->
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>

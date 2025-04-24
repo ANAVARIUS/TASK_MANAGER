@@ -1,2 +1,22 @@
 [
+  {
+    "id": 1,
+    "title": "Bañar al perro",
+    "due_date": "2025-04-23T00:00:00.000Z",
+    "id_user": 1,
+    "status": "A",
+    "tags": null,
+    "description": null
+  },
+  {
+    "id": 4,
+    "title": "Terminar practica",
+    "due_date": "2025-04-23",
+    "id_user": 1,
+    "status": "A",
+    "tags": [
+      2
+    ],
+    "description": null
+  }
 ]

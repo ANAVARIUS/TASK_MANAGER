@@ -16,14 +16,17 @@ const init = ()=>{
             if(toggleTags)
                 for(let tag of responseData.data){
                     let tag_container = document.createElement("a"),
-                        edit_tag_icon = document.createElement("i");
-                    tag_container.innerText = tag.name;
+                        edit_tag_icon = document.createElement("i"),
+                        tag_text = document.createElement("span")
+                    tag_text.innerText = tag.name;
                     edit_tag_icon.style.marginLeft = '10%';
                     edit_tag_icon.style.color = 'green';
                     tag_container.classList.add("dropdown-item");
                     edit_tag_icon.classList.add('fa', 'fa-pen');
+                    edit_tag_icon.addEventListener('click', () => {editTag(tag);});
+                    tag_text.addEventListener('click', () => {window.location.href = local_url+'tasks.html';});
+                    tag_container.append(tag_text);
                     tag_container.append(edit_tag_icon);
-                    tag_container.addEventListener('click', () => {editTag(tag)});
                     toggleTags.prepend(tag_container);
                 }
         })
@@ -33,6 +36,11 @@ const init = ()=>{
     let userNameHeading = document.getElementById("userNameWidget");
     if(userNameHeading)
         userNameHeading.innerText = JSON.parse(sessionStorage.getItem("user")).name;
+    readUserInfo();
+    managePaginationForPendingTasks(1);
+    managePaginationForCompletedTasks(1);
+    populateTagsInFilterHomeView();
+    populateTagsInFilter();
 };
 
 function toggleForms(){
@@ -92,7 +100,6 @@ function register(){
     }).then(response =>{
         if(!response.ok){
             return response.json().then(errorData => {
-                console.error("Registration failed:", errorData);
                 alert(`Error: ${errorData.ERROR || 'Registration failed'}`);
                 return Promise.reject(errorData);
             })
@@ -128,7 +135,6 @@ function editUserInfo(){
     }).then(response => {
         if(!response.ok){
             return response.json().then(errorData => {
-                console.error("Registration failed:", errorData);
                 alert(`Error: ${errorData.ERROR || 'Registration failed'}`);
                 return Promise.reject(errorData);
             })
@@ -150,7 +156,6 @@ function deleteUserPermanently(){
     }).then(response => {
         if(!response.ok){
             return response.json().then(errorData => {
-                console.error("Registration failed:", errorData);
                 alert(`Error: ${errorData.ERROR || 'Registration failed'}`);
                 return Promise.reject(errorData);
             })

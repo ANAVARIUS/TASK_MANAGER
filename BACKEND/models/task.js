@@ -1,6 +1,7 @@
 //-----------IMPORTACIONES-----------//
 const fs = require('fs');
 const {User, Users} = require('./user');
+const {Tag, tags, TagException} = require('../models/tag.js');
 
 //-----------LECTURA DE BASE DE DATOS-----------//
 
@@ -14,7 +15,7 @@ function getNextTaskID(){
 
 class TaskException{
     constructor(errorMessage){
-        this.errorMessage = errorMessage;
+        this.message = errorMessage;
     }
 }
 
@@ -26,13 +27,13 @@ class Task{
     #id_user;
     #status;
     #tags;
-    constructor(title, due_date, id_user, status, tags , description) {
+    constructor(title, due_date, id_user, status, theTags , description) {
         this.#id = getNextTaskID();
         this.title = title;
         this.due_date = due_date;
         this.id_user = id_user;
         this.status = status;
-        this.tags = tags;
+        this.tags = theTags;
         this.description = description;
     }
     get id(){
@@ -59,19 +60,19 @@ class Task{
     get description(){
         return this.#description;
     }
-    set tags(tags){
-        if(!tags){
+    set tags(theTags){
+        if(!theTags){
             this.#tags = null;
             return;
         }
-        if(!Array.isArray(tags))
+        if(!Array.isArray(theTags))
             throw new TaskException("Tags must be provided as an Array");
-        for (let id of tags) {
+        for (let id of theTags) {
             if (!tags.some(tag => tag.id === id)) {
-                throw new TagException(`Some tag id does not exist`);
+                throw new TaskException(`Some tag id does not exist`);
             }
         }
-        this.#tags = tags;
+        this.#tags = theTags;
     }
     set status(status){
         if(status !== "A" && status !== "F" && status !== "C")
@@ -80,7 +81,7 @@ class Task{
     }
     set id_user(id_user){
         if (!Users.some(user => user.id === id_user))
-            throw new TagException("User does not exist");
+            throw new TaskException("User does not exist");
         this.#id_user = id_user;
     }
     set due_date(due_date){
@@ -115,4 +116,4 @@ class Task{
 
 //-----------EXPORTACIONES-----------//
 
-module.exports = {Task, tasks}
+module.exports = {Task, tasks, TaskException}

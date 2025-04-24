@@ -105,7 +105,8 @@ function deleteUser(req, res) {
     const userToBeDeleted = Users.find(user => user.id === parseInt(req.params.id));
     for (let task of tasks) {
         if (task.id_user === userToBeDeleted.id) {
-            res.status(403).send("The user has active tasks.");
+            res.status(403).send({"ERROR": "The user has active tasks."});
+            return;
         }
     }
     Users.splice(userIndex, 1);

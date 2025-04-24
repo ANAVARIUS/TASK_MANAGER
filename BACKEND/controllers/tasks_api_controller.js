@@ -1,5 +1,6 @@
 //-----------IMPORTACIONES-----------//
-const {Task, tasks} = require('../models/task.js');
+const {Tag, tags, TagException} = require('../models/tag.js');
+const {Task, tasks, TaskException} = require('../models/task.js');
 const fs = require("fs");
 const {User, Users} = require("../models/user");
 
@@ -9,27 +10,27 @@ function createTask(req, res) {
     try{
         let thisPassword = req.header('x-auth');
         let thisUser = Users.find(user=>user.password === thisPassword);
+        let id_user = thisUser.id;
         let title = req.body.title;
-        let id_user = parseInt(req.body.id_user);
         let due_date = req.body.due_date;
-        let status = req.body.status;
+        let status = "A";
         let tags = req.body.tags;
         let description = null;
         if(!title || !id_user){
-            res.status(400).send("Missing title or id_user.");
+            res.status(400).send({"ERROR": "Missing title or user credentials."});
         }
         else if(id_user !== thisUser.id){
-            res.status(401).send("Unauthorized. Can't assign tasks to other users.");
+            res.status(401).send({"ERROR": "Unauthorized. Can't assign tasks to other users."});
         }
         else{
             let newTask = new Task(title, due_date, id_user, status, tags, description);
             tasks.push(newTask.toObj());
             fs.writeFileSync('./database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
-            res.status(200).send('Task saved successfully.');
+            res.status(200).send({200: 'Task saved successfully.'});
         }
     }
     catch(err){
-        res.status(400).send(err.errorMessage);
+        res.status(400).send({"ERROR": err.message});
     }
 }
 
@@ -37,7 +38,7 @@ function getTaskById(req, res) {
     let id = parseInt(req.params.id);
     let task = tasks.find(task => task.id === id);
     if(!task){
-        res.status(404).send("404 - Task Not Found!");
+        res.status(404).send({"ERROR": "404 - Task Not Found!"});
     }
     res.status(200).json(task);
 }
@@ -66,11 +67,20 @@ function getAllTasks(req, res) {
     try {
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
+        const status = req.query.status;
         const myUser = Users.find(user => user.password === req.header('x-auth'))
         const myId = myUser.id;
-        const userTasks = tasks.filter(task => task.id_user === myId);
+        const selectedTag = req.query.tag;
+        let userTasks = undefined;
+        let selectedTagObj = tags.find(tag=>tag.name === selectedTag);
+        if(status){
+            if(selectedTagObj) userTasks = tasks.filter(task => (task.id_user === myId && task.status === status && (task.tags? task.tags[0]: null)  === selectedTagObj.id));
+            else userTasks = tasks.filter(task => (task.id_user === myId && task.status === status));
+        }
+        else if(selectedTagObj) userTasks = tasks.filter(task => (task.id_user === myId && (task.tags? task.tags[0]: null)  === selectedTagObj.id));
+        else userTasks = tasks.filter(task => (task.id_user === myId));
         if (page < 1 || limit < 1) {
-            res.status(400).send("Invalid page or limit");
+            res.status(400).send({"ERROR": "Invalid page or limit"});
             return;
         }
         let Firsttask = (page - 1) * limit;
@@ -79,13 +89,13 @@ function getAllTasks(req, res) {
                 page: page,
                 nextPage: page + 1,
                 limit: limit,
-                total: tasks.length,
+                total: userTasks.length,
                 data: userTasks.slice(Firsttask, Firsttask + limit)
             }
         )
     }
     catch(err){
-        res.set(401).send("The password presented does not match any user.");
+        res.set(401).send({"ERROR": err.message});
     }
 }
 
@@ -101,10 +111,10 @@ function updateTask(req, res) {
         }
     }
     if (!updated) {
-        res.status(400).send("No valid parameter was found.");
+        res.status(400).send({"ERROR": "No valid parameter was found."});
     }
     else {
-        fs.writeFileSync('./BACKEND/database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
+        fs.writeFileSync('./database/tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
         res.status(200).json({
             message: "Task updated!",
             task: task
