@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>TaskManager</title>
-        <link rel="stylesheet" href="../assets/css/bootstrap.css    ">
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
             html, body {
                 height: 100%;
-                background: -moz-linear-gradient(45deg, lightgreen, lawngreen);
+                background: linear-gradient(45deg, lightgreen, lawngreen);
             }
             .btn{
                 background-color: inherit;
@@ -189,9 +189,9 @@
                     <div class="modal-body">
                         <form id="formEditTask">
                             <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" name="title" placeholder="Nombre de la tarea">
+                            <input  id="editname" type="text" class="form-control" name="title" placeholder="Nombre de la tarea">
                             <label for="date" class="form-label">Fecha:</label>
-                            <input type="date" class="form-control" name="due_date" placeholder="dd/mm/aaa">
+                            <input id="editdate" type="date" class="form-control" name="due_date" placeholder="dd/mm/aaa">
                             <label class="form-label">Etiqueta:</label>
                             <select id="tagSelect2" class="form-select" aria-label="Default select example" name="tags" style="margin-bottom: 5%">
                                 <option selected>Sin etiqueta</option>

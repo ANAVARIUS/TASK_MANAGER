@@ -1,26 +1,3 @@
 [
-  {
-    "id": 1,
-    "name": "Salud",
-    "color": "#ffff00",
-    "id_user": 1
-  },
-  {
-    "id": 2,
-    "name": "Escuela",
-    "color": "#3ef3fd",
-    "id_user": 1
-  },
-  {
-    "id": 3,
-    "name": "Alimentacion",
-    "color": "#e709ff",
-    "id_user": 1
-  },
-  {
-    "id": 4,
-    "name": "Trabajo",
-    "color": "#ff060d",
-    "id_user": 1
-  }
+
 ]

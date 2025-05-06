@@ -103,12 +103,6 @@ function updateUser(req, res) {
 function deleteUser(req, res) {
     const userIndex = Users.findIndex(user => user.id === parseInt(req.params.id));
     const userToBeDeleted = Users.find(user => user.id === parseInt(req.params.id));
-    for (let task of tasks) {
-        if (task.id_user === userToBeDeleted.id) {
-            res.status(403).send({"ERROR": "The user has active tasks."});
-            return;
-        }
-    }
     Users.splice(userIndex, 1);
     fs.writeFileSync('./database/users.json', JSON.stringify(Users, null, 2), 'utf8');
     res.status(200).json({

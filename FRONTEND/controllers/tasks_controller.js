@@ -273,7 +273,7 @@ function populateTagsInFilterHomeView(){
                 tagDisplay.append(tagWrapper);
             }
         }
-        if(data.data)
+        if(data.data && data.data.length > 0)
             managePaginationTasksByTags(1, data.data[0].name)
     })
         .catch(error => {
@@ -282,7 +282,7 @@ function populateTagsInFilterHomeView(){
 }
 
 function managePaginationTasksByTags(page, passedTags){
-    fetch(`/tasks?page=${page}&limit=3&tag=${passedTags}`, {
+    fetch(`/tasks?page=${page}&limit=3&tag=${passedTags}&status=A`, {
         method: 'GET',
         headers: {'x-auth': JSON.parse(sessionStorage.getItem('user')).password}
     }).then(res => {
@@ -330,7 +330,7 @@ function managePaginationTasksByTags(page, passedTags){
                     let tagColor = task.tags ? (tags.data.find(tag => tag.id === task.tags[0]).color) : "#000000";
                     element.innerHTML = `<td scope="row"><input type="checkbox" id="filteredCheckbox${task.title}"></td>
                                         <td>${task.title}</td>
-                                        <td><span class="badge" style="background-color: ${tagColor}">${tagName}</span></td>
+                                        <td><span class="badge" style="background-color: ${tagColor}; !important">${tagName}</span></td>
                                      <td>${task.due_date.slice(8, 10)}/${task.due_date.slice(5, 7)}/${task.due_date.slice(0, 4)}</td>`;
                     table.append(element);
                     document.getElementById(`filteredCheckbox${task.title}`).addEventListener("click", () => {checkTask(task);});
@@ -400,7 +400,7 @@ function managePaginationTasksView(page, passedTags){
                 document.getElementById(`${passedTags}_TaskView`).style.opacity = 1;
                 let listOfTotalTasks = taskList;
                 let totalOfTasks = tasks.data;
-                const pageCount = Math.ceil(listOfTotalTasks.length / 3);
+                const pageCount = Math.ceil(listOfTotalTasks.length / 10);
                 let table = document.getElementById("tableTasksView");
                 table.innerHTML = "";
                 if (pageCount > 1) {
@@ -440,9 +440,12 @@ function managePaginationTasksView(page, passedTags){
                     table.append(element);
                     document.getElementById(`filteredCheckbox${task.title}TaskView`).addEventListener("click", () => {checkTask(task);});
                     document.getElementById(`${task.title}Edit`).addEventListener("click", () => {
+                        populateTaskInfo(task);
                         let edit_tag_modal = new bootstrap.Modal(document.getElementById('edittaskModal'));
                         edit_tag_modal.show();
-                        document.getElementById("formEditTask").onsubmit = ()=> {updateTask(task.id)};
+                        document.getElementById("formEditTask").onsubmit = ()=> {
+                            updateTask(task.id);
+                        };
                     });
                     document.getElementById(`${task.title}Delete`).addEventListener("click", () => {
                         let delete_tag_modal = new bootstrap.Modal(document.getElementById('deleteTaskModal'));
@@ -497,7 +500,7 @@ function populateTagsInFilter(){
                 tagDisplay.append(tagWrapper);
             }
         }
-        if(data.data)
+        if(data.data && data.data.length > 0)
             managePaginationTasksView(1, data.data[0].name)
     })
         .catch(error => {
@@ -552,4 +555,9 @@ function deleteTask(taskID){
     }).catch(error => {
         console.error('Error en register:', error);
     });
+}
+
+function populateTaskInfo(task){
+    document.getElementById("editname").value = task.title;
+    document.getElementById("editdate").value = `${task.due_date.slice(0, 4)}-${task.due_date.slice(5, 7)}-${task.due_date.slice(8, 10)}`;
 }

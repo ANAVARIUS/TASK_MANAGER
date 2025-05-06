@@ -9,7 +9,11 @@ let tags = JSON.parse(fs.readFileSync('./database/tags.json', 'utf8'));
 //-----------MODELO-----------//
 
 function getNextTagID(){
-    return tags.length+1;
+    let max = 0;
+    for(let eachtag of tags){
+        if(eachtag.id > max) max = eachtag.id;
+    }
+    return max+1;
 }
 
 class TagException{
@@ -24,12 +28,11 @@ class Tag{
     #color;
     #id_user
     constructor(name, colorHex, id_user){
-        let color = colorHex.slice(1, colorHex.length);
-        if(!name || !color)
+        if(!name || !colorHex)
             throw new TagException("A name and color must be provided");
         this.#id = getNextTagID();
         this.name = name;
-        this.color = color;
+        this.color = colorHex;
         this.id_user = id_user;
     }
     get id(){
@@ -47,10 +50,11 @@ class Tag{
     get color(){
         return this.#color;
     }
-    set color(color){
+    set color(colorH){
+        let color = colorH.slice(1, colorH.length);
         if(isNaN(parseInt(color, 16)))
             throw new TagException("The color must be in hexadecimal format");
-        this.#color = parseInt(color, 16);
+        this.#color = colorH;
     }
     get id_user(){
         return this.#id_user;
